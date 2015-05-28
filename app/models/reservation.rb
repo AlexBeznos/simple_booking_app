@@ -1,5 +1,8 @@
 class Reservation < ActiveRecord::Base
   validates :start_time, :end_time, :table, presence: true
+  validates :start_time, :end_time, :overlap => { :scope => "table",
+                                                  :message_content => "is already booked"}
+
   validate :start_time_more_than_now, if: 'start_time'
   validate :end_time_less_than_start_time, if: 'start_time && end_time'
 
