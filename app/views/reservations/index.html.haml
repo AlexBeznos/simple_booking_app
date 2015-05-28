@@ -1,0 +1,22 @@
+= content_for :title, 'Reservations'
+
+.row
+  - @reservations_by_table.each do |table, reservations|
+    .col-md-6
+      .panel.panel-info
+        .panel-heading= "Table ##{table}"
+        .panel-body
+          %table.table.table-striped
+            %thead
+              %tr
+                %th start time
+                %th end time
+                %th
+            %tbody
+            - reservations.each do |reservation|
+              %tr
+                %td= reservation.start_time.strftime("%l:%M %e.%-m.%Y")
+                %td= reservation.end_time.strftime("%l:%M %e.%-m.%Y")
+                %td
+                  = link_to 'edit', edit_reservation_path(reservation), class: 'btn btn-primary'
+                  = link_to 'destroy', reservation_path(reservation), class: 'btn btn-danger', method: 'DELETE'
