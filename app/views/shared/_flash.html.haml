@@ -1,0 +1,8 @@
+-flash.each do |type, message|
+  - case type
+  - when 'notice'
+    .alert.alert-success
+      = message
+  - when 'alert'
+    .alert.alert-alert
+      = message

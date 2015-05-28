@@ -25,7 +25,11 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 gem 'validates_overlap'
 gem 'bootstrap-sass', '~> 3.3.4'
+gem 'momentjs-rails'
+gem 'bootstrap3-datetimepicker-rails'
 gem 'haml-rails'
+gem 'simple_form'
+
 
 
 # Use ActiveModel has_secure_password

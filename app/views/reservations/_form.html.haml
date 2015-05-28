@@ -1,0 +1,7 @@
+= simple_form_for @reservation do |f|
+  = f.error_notification
+  = f.input :table, as: :integer
+  = f.input :start_time, as: :string, input_html: { class: 'datepicker' }
+  = f.input :end_time, as: :string, input_html: { class: 'datepicker' }
+
+  = f.button :submit
