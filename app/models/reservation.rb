@@ -1,4 +1,6 @@
 class Reservation < ActiveRecord::Base
+  default_scope { order(:start_time) }
+
   validates :start_time, :end_time, :table, presence: true
   validates :start_time, :end_time, :overlap => { :scope => "table",
                                                   :message_content => "is already booked"}

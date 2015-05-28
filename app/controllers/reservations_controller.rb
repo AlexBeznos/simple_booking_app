@@ -2,7 +2,7 @@ class ReservationsController < ApplicationController
   before_action :find_reservation, except: [:index, :new, :create]
   def index
     @reservations = Reservation.all
-    @reservations_by_table = @reservations.group_by{ |r| r.table }
+    @reservations_by_table = @reservations.group_by{ |r| r.table }.sort_by {|key, value| key}
   end
 
   def new
