@@ -29,6 +29,7 @@ gem 'momentjs-rails'
 gem 'bootstrap3-datetimepicker-rails'
 gem 'haml-rails'
 gem 'simple_form'
+gem 'seed_dump'
 
 
 
