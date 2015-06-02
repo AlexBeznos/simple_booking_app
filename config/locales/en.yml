@@ -20,4 +20,6 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  validations:
+    less_or_equel: "can't be less or equel to %{time}"
+    already_booked: 'is already booked'
