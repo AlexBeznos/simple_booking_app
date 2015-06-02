@@ -6,9 +6,19 @@ class Reservation < ActiveRecord::Base
 
   validate :start_time_more_than_now, if: 'start_time'
   validate :end_time_less_than_start_time, if: 'start_time && end_time'
-  validate :start_time_enters, if: 'start_time && end_time'
-  validate :end_time_enters, if: 'start_time && end_time'
+  validate :start_time_entrance, if: 'start_time && end_time'
+  validate :end_time_entrance, if: 'start_time && end_time'
   validate :full_overlap, if: 'start_time && end_time'
+
+  protected
+    def add_entrance_error(reservations, time)
+      reservations_with_time_entrance = reservations.time_enters(time)
+      reservations_with_time_entrance.delete(self)
+
+      if reservations_with_time_entrance.any?
+        yield
+      end
+    end
 
   private
     def start_time_more_than_now
@@ -19,24 +29,18 @@ class Reservation < ActiveRecord::Base
       errors.add(:end_time, I18n.t('validations.less_or_equel', time: 'start time')) if end_time <= start_time
     end
 
-    def start_time_enters
+    def start_time_entrance
       @reservations = Reservation.where(table: table)
-      reservations_with_time_enterence = @reservations.time_enters(start_time)
-      reservations_with_time_enterence.delete(self)
 
-      if reservations_with_time_enterence.any?
-        puts 'start_time_enters'
+      self.add_entrance_error(@reservations, start_time) do
         errors.add(:start_time, I18n.t('validations.already_booked'))
       end
     end
 
-    def end_time_enters
+    def end_time_entrance
       @reservations = Reservation.where(table: table) unless defined?(@reservations)
-      reservations_with_time_enterence = @reservations.time_enters(end_time)
-      reservations_with_time_enterence.delete(self)
 
-      if reservations_with_time_enterence.any?
-        puts 'end_time_enters'
+      add_entrance_error(@reservations, end_time) do
         errors.add(:end_time, I18n.t('validations.already_booked'))
       end
     end
@@ -47,7 +51,6 @@ class Reservation < ActiveRecord::Base
       full_overlap.delete(self)
 
       if full_overlap.any?
-        puts 'full_overlap'
         errors.add(:start_time, I18n.t('validations.already_booked'))
         errors.add(:end_time, I18n.t('validations.already_booked'))
       end
